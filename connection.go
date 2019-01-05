@@ -18,10 +18,12 @@ import (
 	"database/sql/driver"
 	"net/http"
 	"encoding/json"
+	"io"
+	"log"
 )
 
 type restsqlConn struct {
-	url string
+	url	string
 }
 
 // Begin is stubbed out, but is necessary to satisfy the interface requirements
@@ -38,8 +40,6 @@ func (rc *restsqlConn) Prepare(query string) (driver.Stmt, error) {
 // Query carries out a basic SQL query on a REST API endpoint. This presently
 // takes the form of the raw query being appended to the base path.
 func (rc *restsqlConn) Query(query string, args []driver.Value) (driver.Rows, error) {
-	var data interface{}
-
 	res, err := http.Get(rc.url+query)
 	if err != nil {
 		return nil, driver.ErrBadConn
@@ -47,16 +47,28 @@ func (rc *restsqlConn) Query(query string, args []driver.Value) (driver.Rows, er
 
 	defer res.Body.Close()
 
-	json.NewDecoder(res.Body).Decode(&data)
-	
 	rows := new(jsonRows)
 	rows.rc = rc
-	rows.rs.data = data
 	
+
+	dec := json.NewDecoder(res.Body)
+	for {
+		var data interface{}
+
+		err = dec.Decode(&data);
+		if err == io.EOF {
+			return rows, nil
+		} else if err != nil {
+			log.Fatal("failed decoding JSON message")
+		}
+
+		rows.rs.data = append(rows.rs.data, data)
+	}
+
 	return rows, err
 }
 
 // Close is stubbed out, but is necessary to satisfy the interface requirements
 func (rc *restsqlConn) Close() (err error) {
-	return
+	return nil
 }

@@ -1,6 +1,6 @@
 # Go-SQL-REST-Driver
 
-A simple driver Go's [database/sql](https://golang.org/pkg/database/sql/)
+A simple driver for Go's [database/sql](https://golang.org/pkg/database/sql/)
 package for SQL over REST API endpoints, such as those found within the
 RestAssured Query Gateway.
 

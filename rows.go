@@ -22,7 +22,8 @@ import (
 type resultSet struct {
 	// As we deal with dynamic JSON responses, leave this as an interface
 	// type for client-side unmarshalling and struct mapping.
-	data	interface{}
+	data	[]interface{}
+	num	int
 }
 
 type jsonRows struct {
@@ -35,12 +36,13 @@ func (rows *jsonRows) Columns() []string {
 	return []string{""}
 }
 
-func (rows *jsonRows) NextResultSet() error {
-	return io.EOF
-}
-
 func (rows *jsonRows) Next(dest []driver.Value) error {
-	dest[0] = rows.rs.data;
+	if (rows.rs.num == len(rows.rs.data)) {
+		return io.EOF
+	}
+
+	dest[0] = rows.rs.data[rows.rs.num]
+	rows.rs.num++
 	return nil
 }
 
