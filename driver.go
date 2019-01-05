@@ -27,6 +27,8 @@ import (
 type RESTSQLDriver struct{
 }
 
+// Open prepares a destination URL endpoint that raw queries are appended to.
+// The actual establishment of the connection is deferred until Query time.
 func (d RESTSQLDriver) Open(url string)(driver.Conn, error) {
 	var err error
 
