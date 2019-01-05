@@ -1,5 +1,9 @@
 # Go-SQL-REST-Driver
 
+[![godoc](https://godoc.org/github.com/adaptant-labs/go-sql-rest-driver?status.svg)](http://godoc.org/github.com/adaptant-labs/go-sql-rest-driver)
+[![Build Status](https://travis-ci.com/adaptant-labs/go-sql-rest-driver.svg?branch=master)](https://travis-ci.com/adaptant-labs/go-sql-rest-driver)
+[![Go Report Card](https://goreportcard.com/badge/github.com/adaptant-labs/go-sql-rest-driver)](https://goreportcard.com/report/github.com/adaptant-labs/go-sql-rest-driver)
+
 A simple driver for Go's [database/sql](https://golang.org/pkg/database/sql/)
 package for SQL over REST API endpoints, such as those found within the
 RestAssured Query Gateway.
@@ -22,6 +26,13 @@ import _ "github.com/adaptant-labs/go-sql-rest-driver"
 
 db, err := sql.Open("restsql", "http://localhost:9000/query/v1/")
 ```
+
+## Online Documentation
+
+Limited API documentation for the driver interface itself is provided through godoc, this can be accessed
+directly on the [package entry](https://godoc.org/github.com/adaptant-labs/go-sql-rest-driver)
+in the godoc package repository. In general, however, the [`database/sql`](https://golang.org/pkg/database/sql/)
+API should always be the main method of invocation.
 
 ## Acknowledgements
 
