@@ -23,6 +23,10 @@ import _ "github.com/adaptant-labs/go-sql-rest-driver"
 db, err := sql.Open("restsql", "http://localhost:9000/query/v1/")
 ```
 
+## Acknowledgements
+
+This project has received funding from the European Union’s Horizon 2020 research and innovation programme under grant agreement No 731678.
+
 ## License
 
 go-sql-rest-driver is licensed under the terms of the Apache 2.0 license, the full
