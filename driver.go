@@ -24,15 +24,15 @@ import (
 // RESTSQLDriver is exported to make the driver directly accessible where
 // needed. General usage is expected to be constrained to the database/sql
 // APIs.
-type RESTSQLDriver struct{
+type RESTSQLDriver struct {
 }
 
 // Open prepares a destination URL endpoint that raw queries are appended to.
 // The actual establishment of the connection is deferred until Query time.
-func (d RESTSQLDriver) Open(url string)(driver.Conn, error) {
+func (d RESTSQLDriver) Open(url string) (driver.Conn, error) {
 	var err error
 
-	rc := &restsqlConn{url: url};
+	rc := &restsqlConn{url: url}
 
 	return rc, err
 }

@@ -22,13 +22,13 @@ import (
 type resultSet struct {
 	// As we deal with dynamic JSON responses, leave this as an interface
 	// type for client-side unmarshalling and struct mapping.
-	data	[]interface{}
-	num	int
+	data []interface{}
+	num  int
 }
 
 type jsonRows struct {
-	rc	*restsqlConn
-	rs	resultSet
+	rc *restsqlConn
+	rs resultSet
 }
 
 // By default we return a single column, which embodies the entire row response from the query.
@@ -37,7 +37,7 @@ func (rows *jsonRows) Columns() []string {
 }
 
 func (rows *jsonRows) Next(dest []driver.Value) error {
-	if (rows.rs.num == len(rows.rs.data)) {
+	if rows.rs.num == len(rows.rs.data) {
 		return io.EOF
 	}
 
