@@ -19,6 +19,7 @@ package restsql
 import (
 	"database/sql"
 	"database/sql/driver"
+	"net/http"
 )
 
 // RESTSQLDriver is exported to make the driver directly accessible where
@@ -32,7 +33,10 @@ type RESTSQLDriver struct {
 func (d RESTSQLDriver) Open(url string) (driver.Conn, error) {
 	var err error
 
-	rc := &restsqlConn{url: url}
+	rc := &restsqlConn{
+		client: http.DefaultClient,
+		url: url,
+	}
 
 	return rc, err
 }

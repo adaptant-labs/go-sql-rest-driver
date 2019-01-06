@@ -15,6 +15,7 @@
 package restsql
 
 import (
+	"context"
 	"database/sql/driver"
 	"encoding/json"
 	"io"
@@ -23,6 +24,7 @@ import (
 )
 
 type restsqlConn struct {
+	client *http.Client
 	url string
 }
 
@@ -35,6 +37,25 @@ func (rc *restsqlConn) Begin() (driver.Tx, error) {
 // requirements
 func (rc *restsqlConn) Prepare(query string) (driver.Stmt, error) {
 	return nil, nil
+}
+
+// Ping checks connectivity to the host http server by issuing a HEAD request.
+func (rc *restsqlConn) Ping(ctx context.Context) (err error) {
+	req, err := http.NewRequest("HEAD", rc.url, nil)
+	if err != nil {
+		return err
+	}
+
+	resp, err := rc.client.Do(req.WithContext(ctx))
+	if err != nil {
+		return err
+	}
+
+	resp.Body.Close()
+
+	// Note that we do not particularly care about the response code, as we
+	// only care about whether the endpoint is responsive or not.
+	return nil
 }
 
 // Query carries out a basic SQL query on a REST API endpoint. This presently
@@ -69,5 +90,6 @@ func (rc *restsqlConn) Query(query string, args []driver.Value) (driver.Rows, er
 
 // Close is stubbed out, but is necessary to satisfy the interface requirements
 func (rc *restsqlConn) Close() (err error) {
+	rc.client = nil
 	return nil
 }
